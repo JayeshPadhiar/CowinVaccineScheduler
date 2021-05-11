@@ -1,6 +1,6 @@
 # Cowin-Auto-Scheduler
 
-Cowin Auto Schedular takes your City or PIN code as and input and automaticall notifies you via email when any booking is available.
+Cowin Auto Scheduler takes your City or PIN code as and input and automaticall notifies you via email when any booking is available.
 
 Developed by Jayesh Padhiar
 
