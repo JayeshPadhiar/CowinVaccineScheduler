@@ -80,7 +80,7 @@ def init_city(email):
         try:
             centers_resp = requests.get('https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByDistrict', params={'district_id': district_id,
                                                                                                                             'date': datetime.date.today().strftime("%d-%m-%Y")}, headers=head)
-            print(centers_resp)
+            #print(centers_resp)
             centers = centers_resp.json()['centers']
             for center in centers:
                 for session in center['sessions']:
@@ -94,8 +94,9 @@ def init_city(email):
 
 
         except Exception as ex:
-            print(ex.with_traceback)
-            print('Passing')
+            #print(ex.with_traceback)
+            #print('Passing')
+            pass
 
         time.sleep(3)
 
@@ -112,7 +113,7 @@ def init_pin(email):
         try:
             centers_resp = requests.get('https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByPin', params={'pincode': pin,
                                                                                                                             'date': datetime.date.today().strftime("%d-%m-%Y")}, headers=head)
-            print(centers_resp)
+            #print(centers_resp)
             centers = centers_resp.json()['centers']
             for center in centers:
                 for session in center['sessions']:
@@ -126,9 +127,9 @@ def init_pin(email):
 
 
         except Exception as ex:
-            print(ex.with_traceback)
-            print('Passing')
-
+            #print(ex.with_traceback)
+            #print('Passing')
+            pass
 
         time.sleep(3)
 
