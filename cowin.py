@@ -95,6 +95,7 @@ def init_city(email):
 
         except Exception as ex:
             print(ex.with_traceback)
+            print('Passing')
 
         time.sleep(3)
 
@@ -126,6 +127,8 @@ def init_pin(email):
 
         except Exception as ex:
             print(ex.with_traceback)
+            print('Passing')
+
 
         time.sleep(3)
 
