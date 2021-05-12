@@ -322,13 +322,13 @@ def search(email, phone, case):
         available_centers = []
 
         try:
-            print('url', cases[case]['url'])
+            #print('url', cases[case]['url'])
             #print('params', cases[case]['params'])
 
             centers_resp = requests.get(
                 cases[case]['url'], params=cases[case]['params'], headers=head)
 
-            #print(centers_resp)
+            print(centers_resp)
 
             centers = centers_resp.json()['centers']
             for center in centers:
@@ -376,12 +376,12 @@ def search(email, phone, case):
 
                 break
 
-            time.sleep(5)
 
         except Exception as e:
             #print('error: ', e)
             pass
 
+        time.sleep(5)
 
 def engine():
     email = input("Enter your email: ")
