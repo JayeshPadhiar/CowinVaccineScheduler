@@ -309,12 +309,19 @@ def mail(email):
 
 def search(email, phone, case):
 
+    preffered_pincodes = []
+
     if case == '1':
         district_id = get_city_code()
+        preffered_pincodes = input(
+            "Enter your Preffered Pincodes (Separate by space) : ").strip().split(' ')
     else:
         cases['2']['params']['pincode'] = input("Enter PIN Code: ")
+        preffered_pincodes.append(cases['2']['params']['pincode'])
 
     print(data)
+
+    print(preffered_pincodes)
 
     print("\nSeeking Slots. Will Notify as soon as the slots are available\n")
 
@@ -335,7 +342,10 @@ def search(email, phone, case):
                 # available = False
                 for session in center['sessions']:
                     # print("sd")
-                    if session['available_capacity'] != 0:
+                    #if (session['available_capacity'] != 0):
+                    if (session['available_capacity'] != 0) and (str(center['pincode']) in preffered_pincodes):
+                        print('yoooo')
+
                         # available = True
                         available_centers.append({"center_id": center['center_id'],
                                                   "name": center['name'],
@@ -376,12 +386,12 @@ def search(email, phone, case):
 
                 break
 
-
         except Exception as e:
             #print('error: ', e)
             pass
 
         time.sleep(5)
+
 
 def engine():
     email = input("Enter your email: ")
