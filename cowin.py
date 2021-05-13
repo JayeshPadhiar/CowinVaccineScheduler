@@ -1,21 +1,18 @@
+from reportlab.graphics import renderPM
+from svglib.svglib import svg2rlg
+from email.message import Message
+from pprint import pprint
+import PySimpleGUI as sg
+import pygame
+import requests
+import datetime
+import smtplib
+import hashlib
+import time
+import ssl
+import re
 import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
-import re
-import ssl
-import time
-import hashlib
-import smtplib
-import datetime
-import requests
-
-import pygame
-
-
-import PySimpleGUI as sg
-from pprint import pprint
-from email.message import Message
-from svglib.svglib import svg2rlg
-from reportlab.graphics import renderPM
 
 
 data = {
@@ -30,6 +27,7 @@ cases = {
         'publicurl': 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict',
         'params': {
             'district_id': '',
+            'secret': "U2FsdGVkX18oMx2/93IvSXwHjB2227hFgh0uF09S/7bmvn5EJSIu5PsuQUKMSL+t6xMkqVANHqFfyF3+8Stq1A==",
             'date': datetime.date.today().strftime("%d-%m-%Y")
         }
     },
@@ -38,6 +36,7 @@ cases = {
         'url': 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByPin',
         'publicurl': 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin',
         'params': {
+            'secret': "U2FsdGVkX18oMx2/93IvSXwHjB2227hFgh0uF09S/7bmvn5EJSIu5PsuQUKMSL+t6xMkqVANHqFfyF3+8Stq1A==",
             'pincode': '',
             'date': datetime.date.today().strftime("%d-%m-%Y")
         }
@@ -56,7 +55,7 @@ def test():
 
 def get_city_code():
     state_resp = requests.get(
-        'https://api.demo.co-vin.in/api/v2/admin/location/states', headers=head)
+        'https://cdn-api.co-vin.in/api/v2/admin/location/states', headers=head)
     states = state_resp.json()['states']
 
     for state in states:
@@ -66,7 +65,7 @@ def get_city_code():
     data['state_id'] = state_id
 
     city_resp = requests.get(
-        'https://api.demo.co-vin.in/api/v2/admin/location/districts/'+state_id, headers=head)
+        'https://cdn-api.co-vin.in/api/v2/admin/location/districts/'+state_id, headers=head)
     cities = city_resp.json()['districts']
     for city in cities:
         print(city['district_id'], city['district_name'])
@@ -203,6 +202,8 @@ def get_captcha(token):
 
 def schedule(session_id, phone):
 
+    print("Scheduling")
+
     token = login(phone)
 
     benifId = get_benif(token)
@@ -319,15 +320,25 @@ def mail(email):
     m['Subject'] = 'URGENT!'
     m.set_payload('VACCINE AVAILABLE BOOK SOON')
 
-    context = ssl.create_default_context()
-    with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
-        server.login(sender_email, password)
-        server.sendmail(sender_email, receiver_email, m.as_string())
+    try:
+        print('Emailing')
+        context = ssl.create_default_context()
+        with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
+            server.login(sender_email, password)
+            server.sendmail(sender_email, receiver_email, m.as_string())
+            print('Email Sent !')
+    except Exception as e:
+        print(e)
 
 
-def search(email, phone, case):
+def search(email, phone, case, token):
 
     preffered_pincodes = []
+
+    head = {
+        'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36',
+        'Authorization': 'Bearer '+token
+    }
 
     if case == '1':
         district_id = get_city_code()
@@ -350,6 +361,11 @@ def search(email, phone, case):
 
             centers_resp = requests.get(
                 cases[case]['url'], params=cases[case]['params'], headers=head)
+
+            if centers_resp.status_code == 401:
+                print('401: Trying Public Server')
+                centers_resp = requests.get(
+                    cases[case]['publicurl'], params=cases[case]['params'], headers=head)
 
             print(centers_resp)
 
@@ -374,6 +390,8 @@ def search(email, phone, case):
                             "min_age_limit": session['min_age_limit']})
 
             if len(available_centers) != 0:
+                mail(email)
+
                 print("VACCINE SLOT AVAILABLE !!! BOOK FASTA !")
                 # pprint(available_data)
                 for i in range(len(available_centers)):
@@ -387,8 +405,6 @@ def search(email, phone, case):
                           available_centers[i]['min_age_limit'], '+')
                     print(available_centers[i]['session_id'])
 
-
-                
                 pygame.init()
                 soundObj = pygame.mixer.Sound('beep.wav')
                 soundObj.play(-1)
@@ -398,9 +414,7 @@ def search(email, phone, case):
                 print()
                 print('Scheduling ', available_centers[index]['session_id'])
 
-                mail(email)
                 schedule(available_centers[index]['session_id'], phone)
-
                 break
 
         except Exception as e:
@@ -414,13 +428,15 @@ def engine():
     email = input("Enter your email: ")
     phone = input("Enter your phone number: ")
 
+    token = login(phone)
+
     print("1 -> Search By City")
     print("2 -> Search By Pin")
     print('cases', list(cases.keys()))
     switch = input("Enter : ")
 
     if switch in list(cases.keys()):
-        search(email, phone, switch)
+        search(email, phone, switch, token)
     else:
         print("Enter a valid value")
 
