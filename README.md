@@ -9,6 +9,7 @@ Cowin Auto Scheduler takes your City or PIN code as an input and automatically n
 
 # Install Requirements
 Install the requirements first by using this command
+<br />
 `pip install -r requirements.txt`
 
 # Things To Note
