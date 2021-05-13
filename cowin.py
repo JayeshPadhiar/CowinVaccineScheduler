@@ -1,19 +1,19 @@
-from reportlab.graphics import renderPM
-from svglib.svglib import svg2rlg
-from email.message import Message
-from pprint import pprint
-import PySimpleGUI as sg
-import pygame
-import requests
-import datetime
-import smtplib
-import hashlib
-import time
-import ssl
 import re
+import ssl
+import time
+import hashlib
+import smtplib
+import datetime
+import requests
+import PySimpleGUI as sg
+from pprint import pprint
+from email.message import Message
+from svglib.svglib import svg2rlg
+from reportlab.graphics import renderPM
+
 import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
-
+import pygame
 
 data = {
     'state_id': '',
