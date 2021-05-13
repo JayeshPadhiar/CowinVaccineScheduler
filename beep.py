@@ -23,3 +23,7 @@ class Note(Sound):
                 samples[time] = -amplitude
         return samples
 
+    pre_init(44100, -16, 1, 1024)
+    pygame.init()
+    Note(440).play(-1)
+    sleep(input())
