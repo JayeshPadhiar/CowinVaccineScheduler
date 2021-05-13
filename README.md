@@ -5,23 +5,4 @@ Cowin Auto Scheduler takes your City or PIN code as an input and automatically n
 
 # Script Path
 
-
-```mermaid
-graph
-A((Start)) --> B(Enter Email for Getting Notification)
-B --> C(Enter Phone Number For Getting OTP)
-C --> D{Select}
-D -- Search By City --> E(Enter State Code)
-E --> F(Enter City Code)
-F --> G(Enter Preffered Pincodes)
-
-D -- Search By PIN --> H(Enter Pincode)
-
-G --> I((Wait until Found))
-H --> I
-I -- Found Centers --> J(Select Center by its Index To Book Appointment)
-J --> K(Enter OTP that came on your phone)
-K --> L(Select the Person by Index)
-L --> M(Enter Captcha)
-M --> N((Ching Chong MF. Your Appointment is Scheduled))
-```
+[![](https://mermaid.ink/img/eyJjb2RlIjoiXG5ncmFwaFxuQSgoU3RhcnQpKSAtLT4gQihFbnRlciBFbWFpbCBmb3IgR2V0dGluZyBOb3RpZmljYXRpb24pXG5CIC0tPiBDKEVudGVyIFBob25lIE51bWJlciBGb3IgR2V0dGluZyBPVFApXG5DIC0tPiBEe1NlbGVjdH1cbkQgLS0gU2VhcmNoIEJ5IENpdHkgLS0-IEUoRW50ZXIgU3RhdGUgQ29kZSlcbkUgLS0-IEYoRW50ZXIgQ2l0eSBDb2RlKVxuRiAtLT4gRyhFbnRlciBQcmVmZmVyZWQgUGluY29kZXMpXG5cbkQgLS0gU2VhcmNoIEJ5IFBJTiAtLT4gSChFbnRlciBQaW5jb2RlKVxuXG5HIC0tPiBJKChXYWl0IHVudGlsIEZvdW5kKSlcbkggLS0-IElcbkkgLS0gRm91bmQgQ2VudGVycyAtLT4gSihTZWxlY3QgQ2VudGVyIGJ5IGl0cyBJbmRleCBUbyBCb29rIEFwcG9pbnRtZW50KVxuSiAtLT4gSyhFbnRlciBPVFAgdGhhdCBjYW1lIG9uIHlvdXIgcGhvbmUpXG5LIC0tPiBMKFNlbGVjdCB0aGUgUGVyc29uIGJ5IEluZGV4KVxuTCAtLT4gTShFbnRlciBDYXB0Y2hhKVxuTSAtLT4gTigoQ2hpbmcgQ2hvbmcgTUYuIFlvdXIgQXBwb2ludG1lbnQgaXMgU2NoZWR1bGVkKSlcbiIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In0sInVwZGF0ZUVkaXRvciI6ZmFsc2V9)](https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiXG5ncmFwaFxuQSgoU3RhcnQpKSAtLT4gQihFbnRlciBFbWFpbCBmb3IgR2V0dGluZyBOb3RpZmljYXRpb24pXG5CIC0tPiBDKEVudGVyIFBob25lIE51bWJlciBGb3IgR2V0dGluZyBPVFApXG5DIC0tPiBEe1NlbGVjdH1cbkQgLS0gU2VhcmNoIEJ5IENpdHkgLS0-IEUoRW50ZXIgU3RhdGUgQ29kZSlcbkUgLS0-IEYoRW50ZXIgQ2l0eSBDb2RlKVxuRiAtLT4gRyhFbnRlciBQcmVmZmVyZWQgUGluY29kZXMpXG5cbkQgLS0gU2VhcmNoIEJ5IFBJTiAtLT4gSChFbnRlciBQaW5jb2RlKVxuXG5HIC0tPiBJKChXYWl0IHVudGlsIEZvdW5kKSlcbkggLS0-IElcbkkgLS0gRm91bmQgQ2VudGVycyAtLT4gSihTZWxlY3QgQ2VudGVyIGJ5IGl0cyBJbmRleCBUbyBCb29rIEFwcG9pbnRtZW50KVxuSiAtLT4gSyhFbnRlciBPVFAgdGhhdCBjYW1lIG9uIHlvdXIgcGhvbmUpXG5LIC0tPiBMKFNlbGVjdCB0aGUgUGVyc29uIGJ5IEluZGV4KVxuTCAtLT4gTShFbnRlciBDYXB0Y2hhKVxuTSAtLT4gTigoQ2hpbmcgQ2hvbmcgTUYuIFlvdXIgQXBwb2ludG1lbnQgaXMgU2NoZWR1bGVkKSlcbiIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In0sInVwZGF0ZUVkaXRvciI6ZmFsc2V9)
