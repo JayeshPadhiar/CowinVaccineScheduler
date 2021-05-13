@@ -1,3 +1,6 @@
+import os
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
+import re
 import ssl
 import time
 import hashlib
@@ -5,12 +8,14 @@ import smtplib
 import datetime
 import requests
 
+import pygame
+
+
+import PySimpleGUI as sg
 from pprint import pprint
 from email.message import Message
-import re
-from reportlab.graphics import renderPM
 from svglib.svglib import svg2rlg
-import PySimpleGUI as sg
+from reportlab.graphics import renderPM
 
 
 data = {
@@ -20,10 +25,23 @@ data = {
 }
 
 cases = {
-    '1': {'url': 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByDistrict', 'params': {'district_id': '',
-                                                                                                        'date': datetime.date.today().strftime("%d-%m-%Y")}},
-    '2': {'url': 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByPin', 'params': {'pincode': '',
-                                                                                                   'date': datetime.date.today().strftime("%d-%m-%Y")}}
+    '1': {
+        'url': 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByDistrict',
+        'publicurl': 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict',
+        'params': {
+            'district_id': '',
+            'date': datetime.date.today().strftime("%d-%m-%Y")
+        }
+    },
+
+    '2': {
+        'url': 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByPin',
+        'publicurl': 'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin',
+        'params': {
+            'pincode': '',
+            'date': datetime.date.today().strftime("%d-%m-%Y")
+        }
+    }
 }
 
 head = {
@@ -320,9 +338,7 @@ def search(email, phone, case):
         preffered_pincodes.append(cases['2']['params']['pincode'])
 
     print(data)
-
     print(preffered_pincodes)
-
     print("\nSeeking Slots. Will Notify as soon as the slots are available\n")
 
     while True:
@@ -339,32 +355,27 @@ def search(email, phone, case):
 
             centers = centers_resp.json()['centers']
             for center in centers:
-                # available = False
                 for session in center['sessions']:
-                    # print("sd")
-                    #if (session['available_capacity'] != 0):
+                    # available = True
                     if (session['available_capacity'] != 0) and (str(center['pincode']) in preffered_pincodes):
-                        print('yoooo')
-
-                        # available = True
-                        available_centers.append({"center_id": center['center_id'],
-                                                  "name": center['name'],
-                                                  "address": center['address'],
-                                                  "state_name": center['state_name'],
-                                                  "district_name": center['district_name'],
-                                                  "block_name": center['block_name'],
-                                                  "pincode": center['pincode'],
-                                                  "fee_type": center['fee_type'],
-                                                  "date": session['date'],
-                                                  "vaccine": session['vaccine'],
-                                                  "session_id": session['session_id'],
-                                                  "min_age_limit": session['min_age_limit']})
+                        # print('yoooo')
+                        available_centers.append({
+                            "center_id": center['center_id'],
+                            "name": center['name'],
+                            "address": center['address'],
+                            "state_name": center['state_name'],
+                            "district_name": center['district_name'],
+                            "block_name": center['block_name'],
+                            "pincode": center['pincode'],
+                            "fee_type": center['fee_type'],
+                            "date": session['date'],
+                            "vaccine": session['vaccine'],
+                            "session_id": session['session_id'],
+                            "min_age_limit": session['min_age_limit']})
 
             if len(available_centers) != 0:
-                print("Vaccine Slot Available. Book Fast")
-
+                print("VACCINE SLOT AVAILABLE !!! BOOK FASTA !")
                 # pprint(available_data)
-
                 for i in range(len(available_centers)):
                     print('\nindex: ', i)
                     print(available_centers[i]['center_id'], available_centers[i]['name'],
@@ -376,12 +387,18 @@ def search(email, phone, case):
                           available_centers[i]['min_age_limit'], '+')
                     print(available_centers[i]['session_id'])
 
-                index = int(input('Select the index to schedule : '))
+
+                
+                pygame.init()
+                soundObj = pygame.mixer.Sound('beep.wav')
+                soundObj.play(-1)
+                index = int(input('\n\nSelect the index to schedule : '))
+                soundObj.stop()
+
                 print()
                 print('Scheduling ', available_centers[index]['session_id'])
 
                 mail(email)
-
                 schedule(available_centers[index]['session_id'], phone)
 
                 break
