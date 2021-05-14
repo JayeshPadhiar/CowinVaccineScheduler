@@ -18,6 +18,14 @@ Install the requirements first by using this command
 
 <br />
 
+
+# How To Run
+Just enter the following command on your terminal
+<br />
+`python3 cowin.py`
+
+<br />
+
 # Things To Note
 > **Note:** **<Response [200]>** is a good thing. Don't press any key just wait until it finds an open slot
 
@@ -29,8 +37,8 @@ Install the requirements first by using this command
 
 # Regarding the Script
 
-- This script is developed for learning and exploring purpose only.
-- Use This at your own risk.
+- This script is developed for learning and exploring purpose only
+- Use this at your own risk
 - Please don't attempt to flood the Cowin APIs
 
 <br /><br />
