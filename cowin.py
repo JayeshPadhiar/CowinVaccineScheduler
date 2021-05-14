@@ -334,6 +334,7 @@ def mail(email):
 def search(email, phone, case, token):
 
     preffered_pincodes = []
+    unselected_sessions = []
 
     head = {
         'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36',
@@ -373,7 +374,7 @@ def search(email, phone, case, token):
             for center in centers:
                 for session in center['sessions']:
                     # available = True
-                    if (session['available_capacity'] != 0) and (str(center['pincode']) in preffered_pincodes):
+                    if (session['available_capacity'] != 0) and (str(center['pincode']) in preffered_pincodes) and (session['session_id'] not in unselected_sessions):
                         # print('yoooo')
                         available_centers.append({
                             "center_id": center['center_id'],
@@ -408,12 +409,18 @@ def search(email, phone, case, token):
                 pygame.init()
                 soundObj = pygame.mixer.Sound('beep.wav')
                 soundObj.play(-1)
-                index = int(input('\n\nSelect the index to schedule : '))
+                index = int(input('\n\nSelect the index to schedule (-1 if none of above) : '))
                 soundObj.stop()
+
+                if index < 0:
+                    for i in range(len(available_centers)):
+                        unselected_sessions.append(available_centers[i]['session_id'])
+                    
+                    print('Unselected Centers = ', unselected_sessions)
+                    continue
 
                 print()
                 print('Scheduling ', available_centers[index]['session_id'])
-
                 schedule(available_centers[index]['session_id'], phone)
                 break
 
