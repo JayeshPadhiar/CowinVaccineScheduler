@@ -1,6 +1,6 @@
-# Cowin-Auto-Scheduler
+# Cowin Vaccine Availability Notifier
 
-Cowin Auto Scheduler takes your City or PIN code as an input and automatically notifies you via email when any booking is available.
+Cowin Vaccine Availability Notifier takes your City or PIN code as an input and automatically notifies you via email when any booking is available. It also helps you to book a vaccination slot as well.
 
 <br />
 
